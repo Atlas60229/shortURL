@@ -1,8 +1,8 @@
 <div class="containt d-flex flex-column align-items-center mx-auto">
   <h1>已縮短為下列網址：</h1>
-  <p>{{webCode}}</p>
+  <p id="copyCode">{{webCode}}</p>
   <div class="col">
-    <button class="btn btn-success">複製</button>
+    <button class="btn btn-success" onclick="copyCode()">複製</button>
     <a class='btn btn-primary' href="/">返回</a>
   </div>
 

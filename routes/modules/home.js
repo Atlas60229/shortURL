@@ -1,16 +1,18 @@
 const express = require('express')
 const router = express.Router()
-const WebSide = require('../../models/website')
+const WebSite = require('../../models/website')
+const open = require('open')
 
-
+// 首頁
 router.get('/', (req, res) => {
     res.render('index')
 })
 
+// 新增
 router.get('/create', (req, res) => {
     const website = req.query.website
     const codeArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    let webCode = ''
+    let tempWebCode = ''
     function hash(str, prime) {
         let hash = 0;
         const len = String(str).length;
@@ -19,29 +21,34 @@ router.get('/create', (req, res) => {
             hash = (hash * prime) + chr;
             hash = hash % 61
         }
-        return webCode += codeArray[hash];
+        return tempWebCode += codeArray[hash];
     }
     hash(website, 7)
     hash(website, 23)
     hash(website, 53)
     hash(website, 31)
     hash(website, 47)
-    webCode = 'localhost:3000/' + webCode 
+    webCode = 'localhost:3000/' + tempWebCode
 
-    return WebSide.create({ website: website, shortURL: webCode })     // 存入資料庫
-        .then(() => res.render('result', {webCode})) // 新增完成後導回首頁
+    return WebSite.create({ website: website, shortURL: tempWebCode })     // 存入資料庫
+        .then(() => res.render('result', { webCode })) // 新增完成後導回首頁
         .catch(error => console.log(error))
 
 })
 
+router.get('/:id', (req, res) => {
+    const id = req.params.id
+    let webURL = ''
 
-
-// router.get('/',(req,res)=>{
-//     Todo.find() //取得資料庫資料
-//         .lean() //內建整理資料function
-//         .sort({_id: 'asc'}) //反序：desc
-//         .then( todos => res.render('index', {todos}))
-//         .catch(error => console.error(error))      
-// })
+    return WebSite.find()
+        .lean()
+        .then(webSite =>{
+            targetWebsite = webSite.find(webSite => webSite.shortURL === id)
+            webURL = targetWebsite.website
+            open(webURL)
+            res.redirect('/')
+        })
+        .catch(error => console.log(error))
+})
 
 module.exports = router
