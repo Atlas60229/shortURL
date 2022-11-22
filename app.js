@@ -8,6 +8,7 @@ const methodOverride = require('method-override')
 const routes = require('./routes')
 require('./config/mongoose')  //執行app.js時會一併執行mongoose.js
 
+
 // Use
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))

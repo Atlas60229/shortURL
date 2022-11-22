@@ -1,9 +1,11 @@
 {{! 首頁 }}
-<form style="max-width:600px;" class="d-flex flex-column align-items-center mx-auto">
+<form style="max-width:600px;" class="d-flex flex-column align-items-center mx-auto" action="/create" method="get">
   <div class="mb-3 align-items-center" >
     <input
       type="url"
-      class="form-control" style="width:500px; background-color:#ececec"
+      name="website"
+      class="form-control" 
+      style="width:500px; background-color:#ececec"
       id="exampleInputEmail1"
       aria-describedby="emailHelp"
       placeholder="請輸入欲縮短的網址"
